@@ -1,0 +1,284 @@
+var colors = {
+    green: "rgb(167, 224, 165)",
+    yellow: "rgb(228, 229, 0)",
+    red: "rgb(250, 116, 112)"
+};
+
+var initialState = {
+    noteCreatorIsOpen: false,
+    checkListCreatorIsOpen: false,
+    sideBarIsOpen: false,
+    noteTitle: "",
+    noteText: "",
+    noteColor: colors.green,
+    noteDate: "",
+    noteTags: [],
+    currentNotes: [],
+    accessKey: 0,
+    checkListItemKey: 0
+};
+
+var state = initializeState(initialState, { noteTags: [] });
+
+function initializeState() {
+    var resObj = {};
+    for (var i = 0; i < arguments.length; i += 1) {
+        var obj = arguments[i],
+            keys = Object.keys(obj);
+        for (var j = 0; j < keys.length; j += 1) {
+            resObj[keys[j]] = obj[keys[j]];
+        }
+    }
+    return resObj;
+}
+
+window.onload = function () {
+    var noteTitle = document.getElementById("noteTitle");
+    noteTitle.addEventListener("change", titleChangedHandler);
+    var checkTitle = document.getElementById("checkTitle");
+    checkTitle.addEventListener("change", titleChangedHandler);
+}
+
+function toggleNoteCreater() {
+    state.noteCreatorIsOpen = !state.noteCreatorIsOpen;
+    var CreateNoteContainer = document.getElementsByClassName("CreateNoteContainer")[0];
+    var CreateNoteExtendedContainer = document.getElementsByClassName("CreateNoteExtendedContainer")[0];
+
+    if (state.noteCreatorIsOpen) {
+        CreateNoteContainer.style.display = "none";
+        CreateNoteExtendedContainer.style.display = "flex";
+        document.getElementsByClassName("NoteDescription")[0].focus();
+    }
+    else {
+        CreateNoteContainer.style.display = "flex";
+        CreateNoteExtendedContainer.style.display = "none";
+    }
+}
+
+function titleChangedHandler(e) {
+    state.noteTitle = e.target.value;
+}
+
+function dateChangedHandler() {
+    state.noteDate = document.getElementById("dateInput").value;
+}
+
+function tagsHandler() {
+    var tags = document.getElementsByClassName("tagInput");
+    for (var i = 0; i < tags.length; i++) {
+        if (tags[i].value) {
+            state.noteTags.push("#" + tags[i].value);
+        }
+    }
+}
+
+function changeColor(color) {
+    state.color = colors[color];
+    var container = document.getElementsByClassName("CreateNoteExtendedContainer")[0];
+    container.style.backgroundColor = state.color;
+}
+
+function renderNotes() {
+    var NotesContainer = document.getElementsByClassName("NotesContainer")[0];
+    while (NotesContainer.firstChild) {
+        NotesContainer.removeChild(NotesContainer.firstChild);
+    }
+    state.currentNotes.map(function (el) {
+        NotesContainer.appendChild(el);
+    })
+}
+
+function addNote(newNode) {
+    state.currentNotes.push(newNode);
+    state.accessKey++;
+    renderNotes();
+}
+
+function deleteNote(accessKey) {
+    var noteIndex = -1;
+    for (var i in state.currentNotes) {
+        if (state.currentNotes[i].accessKey == accessKey) {
+            noteIndex = i;
+            break;
+        }
+    }
+    state.currentNotes.splice(noteIndex, 1);
+    renderNotes();
+}
+
+function saveNote() {
+    state.noteText = document.getElementsByClassName("NoteDescription")[0].innerHTML;
+    if (!state.noteText) return;
+    if (!state.noteTitle) state.noteTitle = "Untitled";
+    var newNode = document.createElement("div");
+    newNode.style.backgroundColor = state.color;
+    newNode.setAttribute("class", "Note");
+    newNode.setAttribute("accessKey", state.accessKey);
+    newNode.innerHTML = createNoteWithData();
+    toggleNoteCreater();
+    addNote(newNode);
+    tagsHandler();
+    if (state.noteTags) {
+        var tagContainers = document.getElementsByClassName("NoteTags");
+        state.noteTags.forEach(function (el) {
+            tagContainers[tagContainers.length - 1].innerHTML += '<div class="tagElement">' + el + '</div>';
+        })
+    }
+    clearInputFields();
+}
+
+function cancelNote() {
+    clearInputFields();
+    document.getElementsByClassName("CreateNoteExtendedContainer")[0].style.display = 'none';
+    document.getElementsByClassName("CreateNoteContainer")[0].style.display = 'flex';
+}
+
+function createNoteWithData() {
+    return '                                                                       \
+        <div class="NoteMain">                                                      \
+          <div><b>' + state.noteTitle + '</b></div>                                 \
+          <div contenteditable="true" aria-multiline="true" role="textbox"          \
+            style="margin: 5% 0; width: 100%">' + state.noteText + '\
+          </div>                                                                    \
+          <div class="NoteTags"></div>                                              \
+        </div>                                                                      \
+        <div class="NoteActionArea">                                                \
+            <span>'+ state.noteDate + '</span>                                       \
+            <img src="https://www.freeiconspng.com/minicovers/calendar-icon-png-4.png"   \
+                 class="Icon"/>                                                     \
+            <img src="https://img.icons8.com/color/100/cancel.png"                  \
+                 class="Icon"                                                       \
+                 onclick="deleteNote('+ state.accessKey + ')" />                        \
+        </div>                                                                      \
+    ';
+}
+
+function clearInputFields() {
+    state = initializeState(
+        {},
+        initialState,
+        {
+            noteTags: [], accessKey: state.accessKey, checkListItemKey: state.checkListItemKey
+        });
+    document.getElementById("noteTitle").value = "";
+    document.getElementsByClassName("NoteDescription")[0].innerHTML = "";
+    document.getElementById("checkTitle").value = '';
+    var tagNodes = document.getElementsByClassName("tagInput");
+    for (var i = 0; i < tagNodes.length; i++) {
+        tagNodes[i].value = "";
+    }
+    document.getElementById("dateInput").value = "";
+    changeColor("green");
+    var CheckListContainer = document.getElementsByClassName("CheckListContainer")[0];
+    while (CheckListContainer.firstChild) {
+        CheckListContainer.removeChild(CheckListContainer.firstChild);
+    }
+    CheckListContainer.innerHTML = initialCheckList();
+}
+
+// CheckList ->
+function toggleCheckListCreater() {
+    state.checkListCreatorIsOpen = !state.checkListCreatorIsOpen;
+    var CreateNoteContainer = document.getElementsByClassName("CreateNoteContainer")[0];
+    var CreateCheckListContainer = document.getElementsByClassName("CreateCheckListContainer")[0];
+
+    if (state.checkListCreatorIsOpen) {
+        CreateNoteContainer.style.display = "none";
+        CreateCheckListContainer.style.display = "flex";
+        document.getElementsByClassName("checkListInput")[0].focus();
+    }
+    else {
+        CreateNoteContainer.style.display = "flex";
+        CreateCheckListContainer.style.display = "none";
+    }
+}
+
+function addListItem() {
+    var CheckListContainer = document.getElementsByClassName("CheckListContainer")[0];
+    var CheckListItem = document.getElementsByClassName("CheckListItem")[0];
+    var newNode = CheckListItem.cloneNode(true);
+    CheckListContainer.appendChild(newNode);
+    var checkListInput = document.getElementsByClassName("checkListInput");
+    checkListInput[checkListInput.length - 1].value = "";
+    checkListInput[checkListInput.length - 1].focus();
+}
+
+function saveCheckList() {
+    var checkListInput = document.getElementsByClassName("checkListInput");
+    var values = [];
+    for (var i = 0; i < checkListInput.length; i++) {
+        if (checkListInput[i].value)
+            values.push(checkListInput[i].value);
+    }
+    if (!values) return;
+
+    var newNode = document.createElement("div");
+    newNode.style.backgroundColor = state.color;
+    newNode.setAttribute("class", "Note");
+    newNode.setAttribute("accessKey", state.accessKey);
+    var CheckListDiv = "<div style='margin: 20px 0 0 20px'>";
+    values.forEach(function (el) {
+        CheckListDiv += '<li class="listItem" accessKey=' + state.checkListItemKey +
+            ' onclick="strikeOut(' + state.checkListItemKey + ')">' + el + '</li>';
+        state.checkListItemKey++;
+    });
+    CheckListDiv += "</div>";
+    newNode.innerHTML = createCheckListWithData(CheckListDiv);
+    toggleCheckListCreater();
+    addNote(newNode);
+    clearInputFields();
+}
+
+function cancelCheck() {
+    clearInputFields();
+document.getElementsByClassName("CreateCheckListContainer")[0].style.display = 'none';
+    document.getElementsByClassName("CreateNoteContainer")[0].style.display = 'flex';
+}
+
+function createCheckListWithData(CheckListDiv) {
+    return '                                                                            \
+        <div class="NoteMain">                                                          \
+          <div><b>'+ state.noteTitle + '</b></div>' + CheckListDiv + '</div>               \
+        <div class="NoteActionArea">                                                    \
+            <span>' + state.noteDate + '</span>                                         \
+            <img src="https://www.freeiconspng.com/minicovers/calendar-icon-png-4.png"  \
+                 class="Icon"/>                                                         \
+            <img src="https://img.icons8.com/color/100/cancel.png"                      \
+                 class="Icon"                                                           \
+                 onclick="deleteNote('+ state.accessKey + ')" />                            \
+        </div>                                                                          \
+    ';
+}
+
+function strikeOut(currentCheckListItemKey) {
+    var listItems = document.getElementsByTagName("li");
+    for (var i = 0; i < listItems.length; i++) {
+        if (listItems[i].accessKey == currentCheckListItemKey) {
+            listItems[i].style.textDecoration = "line-through";
+            break;
+        }
+    }
+}
+
+function initialCheckList() {
+    return '                                                                       \
+        <div class="CheckListItem" >                                                    \
+            <input type="text" maxlength="20" class="checkListInput" />                 \
+            <span class="Icon" onclick="addListItem()">                                 \
+                <img src="https://www.freeiconspng.com/minicovers/add-item-icon-insert-black-plus-new-7.png"    \
+                    style="height: 50%; width: 50%; margin-left: 15px" />               \
+            </span>                                                                     \
+        </div >                                                                         \
+    ';
+}
+
+// SideBar ->
+function toggleSideBar() {
+    state.sideBarIsOpen = !state.sideBarIsOpen;
+    if (state.sideBarIsOpen) {
+        document.getElementsByClassName("SideBar")[0].style.left = "0";
+    }
+    else {
+        document.getElementsByClassName("SideBar")[0].style.left = "-36%";
+    }
+}

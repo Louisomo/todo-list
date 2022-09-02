@@ -1,0 +1,228 @@
+body {
+    background-color: white;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar style */
+.NavBar {
+    padding: 3%;
+    background-color: rgb(87, 130, 164);
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.SideBar {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-color: rgb(199, 186, 186);
+    background-color: rgba(238, 238, 238, 0.6);
+    border-right: 1px solid #555;
+    left: -36%;
+    bottom: 0;
+    width: 35%;
+    height: 100vh;
+    transition: all 0.5s ease-in-out;
+}
+
+.NavBarActions {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    margin-bottom: 20%;
+}
+
+.Icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MainContainer {
+    display: flex;
+    flex-flow: column wrap;
+    margin: 3%;
+}
+
+/* Default Creator style */
+.CreateNoteContainer {
+    padding: 3% 5%;
+    background-color: rgb(167, 224, 165);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+}
+
+.NoteActionButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TapInput {
+    border: none;
+    border-bottom: 1px solid #666;
+    background: none;
+    outline: none;
+}
+
+/* Note Creator Style */
+.CreateNoteExtendedContainer {
+    display: none;
+    flex-direction: column;
+    background-color: rgb(167, 224, 165);
+    padding: 5% 5%;
+    border-radius: 12px;
+}
+
+.NoteTitle {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.NoteDescription {
+    margin: 20px 0;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: white;
+    line-height: 1.2em;
+    height: 5em;
+    overflow: hidden;
+}
+
+.Tags {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.tagInput {
+    width: 90px;
+}
+
+.NoteBottomTab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ColorsContainer {
+    flex: 1;
+    display: flex;
+}
+
+.color {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #333;
+    margin-left: 3%;
+}
+
+.NotesContainer {
+    padding: 3% 5%;
+}
+
+.Note {
+    background-color: rgb(167, 224, 165);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px #aaa;
+    margin-bottom: 2%;
+}
+
+.NoteMain {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
+
+.NoteTags {
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 2%;
+}
+
+.tagInput:focus {
+    outline: none;
+}
+
+.tagElement {
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 2px;
+    background-color: rgb(241, 236, 236);
+}
+
+.NoteActionArea {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+/* Check List Creator style */
+.CreateCheckListContainer {
+    display: none;
+    flex-direction: column;
+    background-color: #ccc;
+    padding: 3% 3%;
+    border-radius: 12px;
+}
+
+.CheckListContainer {
+    display: flex;
+    flex-flow: column wrap;
+    margin: 20px 0;
+}
+
+.CheckListItem {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.checkListInput {
+    padding: 2px;
+}
+.checkListInput:focus{
+    outline: none;
+}
+
+.CheckListBottomTab {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.Button {
+    padding: 5px;
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    display: flex;
+    align-items: center;
+}

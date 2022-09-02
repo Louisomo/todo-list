@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ToDo List JS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="File/css/style.css">
+</head>
+
+<body>
+    <div class="App">
+
+        <!-- Navigation Bar-->
+        <div class="NavBar">
+            <span class="Icon" onclick="toggleSideBar()">
+                <img src="https://img.icons8.com/ios/2x/menu-filled.png" width="100%" height="100%" />
+            </span>
+            <span style="margin-right: 10%">ToDo List!</span>
+            <div class="SideBar">
+                <div class="NavBarActions">
+                    <h1>Demo Side Bar</h1>
+                    <button>About me</button>
+                    <button style="margin: 10% 0">Login</button>
+                    <button>Community</button>
+                </div>
+                <button onclick="toggleSideBar()">
+                     Close</button> 
+            </div>
+        </div>
+
+        <div class="MainContainer">
+
+            <div class="CreateNoteContainer">
+                <div class="Tap">
+                    <input class="TapInput" type="text" placeholder="Tap to take a note..." onclick="toggleNoteCreater()" />
+                </div>
+                <span class="Icon" onclick="toggleCheckListCreater()">
+                    <img src="https://img.icons8.com/ios/2x/test-passed.png" width="100%" height="100%" />
+                </span>
+            </div>
+
+            <!--Default Note Creator-->
+            <div class="CreateNoteExtendedContainer">
+                <div class="NoteTitle">
+                    <input class="TapInput" id="noteTitle" maxlength="20" type="text" placeholder="Untitled" />
+                    <input type="date" id="dateInput" onchange="dateChangedHandler()" />
+                </div>
+                <div class="NoteDescription" contenteditable="true" aria-multiline="true" role="textbox" autofocus></div>
+                <div class="Tags">
+                    <span> #<input type="text" maxlength="14" class="tagInput" /> </span>
+                    <span> #<input type="text" maxlength="14" class="tagInput" /> </span>
+                    <span> #<input type="text" maxlength="14" class="tagInput" /> </span>
+                </div>
+                <div class="NoteBottomTab">
+                    <div class="ColorsContainer">
+                        <span class="color" style="background-color: rgb(167, 224, 165)" onclick="changeColor('green')"></span>
+                        <span class="color" style="background-color: rgb(255, 255, 122)" onclick="changeColor('yellow')"></span>
+                        <span class="color" style="background-color: rgb(250, 116, 112)" onclick="changeColor('red')"></span>
+                    </div>
+                    <div class="NoteActionButtons">
+                        <button class="Button" onclick="cancelNote()">
+                            <img src="https://www.ecommerce.expert/wp-content/uploads/cancel-icon-by-flat-icon.png" style="height: 25px; width: 25px; margin-right: 10px" />
+                            Cancel
+                        </button>
+                        <button class="Button" onclick="saveNote()">
+                            Save!
+                            <img src="https://www.freeiconspng.com/minicovers/green-tick-icon-0.png" style="height: 25px; width: 25px; margin-left: 10px" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CheckList Creator -->
+            <div class="CreateCheckListContainer">
+                <div class="NoteTitle">
+                    <input class="TapInput" id="checkTitle" type="text" placeholder="Untitled" />
+                    <input type="date" id="dateInput" onchange="dateChangedHandler()" />
+                </div>
+                <div class="CheckListContainer">
+                    <div class="CheckListItem">
+                        <input type="text" maxlength="20" class="checkListInput" />
+                        <span class="Icon" onclick="addListItem()">
+                            <img src="https://www.freeiconspng.com/minicovers/add-item-icon-insert-black-plus-new-7.png"
+                                style="height: 50%; width: 50%; margin-left: 15px" />
+                        </span>
+                    </div>
+                </div>
+                <div class="CheckListBottomTab">
+                    <button class="Button" onclick="cancelCheck()">
+                        <span class="Icon" >
+                            <img src="https://www.ecommerce.expert/wp-content/uploads/cancel-icon-by-flat-icon.png" style="height: 80%; width: 80%" />
+                        </span>
+                        Cancel
+                    </button>
+                    <button class="Button" onclick="saveCheckList()">
+                        Create
+                        <span class="Icon" >
+                          <img src="https://www.freeiconspng.com/minicovers/green-tick-icon-0.png" style="height: 80%; width: 80%" />
+                      </span>
+                  </button>
+                </div>
+            </div>
+            <div class="NotesContainer"></div>
+        </div>
+
+    </div>
+</body>
+<script src="file/js/script"></script>
+</html>
